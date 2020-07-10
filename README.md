@@ -1,2 +1,2 @@
-# leeCode-Training
-leecode题目练习记录
+# leeTCode-Training
+leetcode题目练习记录
