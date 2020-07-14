@@ -1,4 +1,4 @@
-const { lowerFirst } = require("lodash");
+const { lowerFirst, min } = require("lodash");
 
 // 反转两个数
 var reverse = function(x) {
@@ -172,4 +172,47 @@ function isValid(s){
     return !stack.length;
 }
 
-console.log(isValid("{[]()}"));
+// console.log(isValid("{[]()}"));
+
+//删除排序数组中的重复项（没做出来）
+/**
+ * 
+ * 给定一个排序数组，你需要在 原地 删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
+不要使用额外的数组空间，你必须在 原地 修改输入数组 并在使用 O(1) 额外空间的条件下完成。
+ */
+var removeDuplicates = function(nums) {
+    let index = 0;
+    while ( index < nums.length) {
+      let curNum = nums[index];
+      let nextNum = nums[index+1];
+      if(curNum === nextNum){
+        nums.splice(index+1,1);
+      }else{
+        index++;
+      }
+    }
+    return nums;
+};
+
+/**
+ * 给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。
+
+不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并 原地 修改输入数组。
+
+元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
+
+ * @param {*} nums 
+ * @param {*} val 
+ */
+var removeElement = function(nums, val) {
+    let index = 0;
+    while(index < nums.length){
+        let element = nums[index];
+        if(element === val){
+            nums.splice(index,1);
+        }else{
+            index++;
+        }
+    }
+    return nums;
+};
