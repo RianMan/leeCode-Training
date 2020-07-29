@@ -383,7 +383,7 @@ var intersect = function(nums1, nums2) {
 
 };
 
-//121. 买卖股票的最佳时机（没做出来）
+//121. 买卖股票的最佳时机I（没做出来）
 // [7,1,5,3,6,4]
 var maxProfit = function(prices) {
     let min = prices[0], max = 0;
@@ -393,4 +393,72 @@ var maxProfit = function(prices) {
     })
     return max
 };
-console.log(maxProfit([1,2,4,1]));
+
+// 122. 买卖股票的最佳时机 II
+// 计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function(prices) {
+    prices.push(0);
+    let len = prices.length;
+    let arr = [];
+    let index = 0;
+    let min = prices[index];
+    let lastIndexCache = 0;
+    while (index < len) {
+        let cur = prices[index];
+        console.log(cur, prices[lastIndexCache] );
+        if(lastIndexCache !== 0 && prices[lastIndexCache] > cur){
+            arr.push(prices[lastIndexCache] - min);
+            min = cur;
+        }
+        if(min > prices[index]){
+            min = prices[index]
+        }
+        lastIndexCache = index;
+        index++;
+    }
+    if(arr.length === 0){
+        prices.pop();
+        return prices[len - 1] - prices[0] > 0 ? prices[len - 1]  - prices[0] : 0;
+    }
+    return arr.reduce((pre,cur) => pre + cur,0);
+};
+
+
+var maxProfit = function(prices) {
+    let profit_out = 0;
+    let profit_in = -prices[0];
+    let len = prices.length;
+    for (let i = 1; i < len; i++){
+        //卖出时利润：求最大值（上次交易卖出时利润，本次交易卖出时利润）
+        profit_out = Math.max(profit_out, profit_in + prices[i]);
+        //买入时利润：求最大值（上次买入时利润，本次买入时利润）
+        profit_in = Math.max(profit_in,  - prices[i]);
+    }
+    return profit_out
+};
+
+/**
+ * 第一个是天数
+ * 第二个是允许交易的最大次数
+ * 第三个是当前的持有状态（即之前说的 rest 的状态，我们不妨用 1 表示持有，0 表示没有持有）
+ * 
+dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
+              max(   选择 rest  ,             选择 sell      )
+
+解释：今天我没有持有股票，有两种可能：
+要么是我昨天就没有持有，然后今天选择 rest，所以我今天还是没有持有；
+要么是我昨天持有股票，但是今天我 sell 了，所以我今天没有持有股票了。
+
+dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
+              max(   选择 rest  ,           选择 buy         )
+
+
+ */
+// [1,2,3,4,5]
+//[6,1,3,2,4,7]
+console.log(maxProfit([6,1,3,2,4,7]));
+// [7,1,5,3,6,4]
